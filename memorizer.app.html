@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memorize</title>
+  <style>
+    #content {
+      font-size: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <textarea id="inputText" rows="5" cols="40"></textarea>
+  <br>
+  <button id="startButton">Start</button>
+  <br>
+  <div id="content"></div>
+  
+  <script>
+    const inputTextElement = document.getElementById("inputText");
+    const startButton = document.getElementById("startButton");
+    const contentElement = document.getElementById("content");
+    let linesOfText = [];
+
+    function startMemorization() {
+      linesOfText = inputTextElement.value.split("\n").filter(line => line.trim() !== "");
+      if (linesOfText.length > 0) {
+        inputTextElement.disabled = true;
+        startButton.disabled = true;
+        displayNextLine();
+      }
+    }
+
+    let currentIndex = 0;
+
+    function displayNextLine() {
+      if (currentIndex < linesOfText.length) {
+        contentElement.textContent = linesOfText[currentIndex];
+        currentIndex++;
+      } else {
+        contentElement.textContent = "End of text.";
+        inputTextElement.disabled = false;
+        startButton.disabled = false;
+        inputTextElement.value = "";
+      }
+    }
+
+    startButton.addEventListener("click", startMemorization);
+    document.addEventListener("keydown", function(event) {
+      if (event.key === " " && inputTextElement.disabled) {
+        displayNextLine();
+      }
+    });
+  </script>
+</body>
+</html>
